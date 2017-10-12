@@ -15,7 +15,7 @@ class Pew
         if (a != null && a.length > 0) 
 		{
             for (o in a) {
-                if (x >= o.x && x <= o.x + 0.width && y >= o.y && y <= o.y + o.height) 
+                if (x >= o.x && x <= o.x + o.width && y >= o.y && y <= o.y + o.height) 
 				{
                     return o;
                 }

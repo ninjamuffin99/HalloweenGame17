@@ -16,6 +16,10 @@ class PlayState extends FlxState
 	private var bg:FlxSprite;
 	
 	private var _flashLight:Flashlight;
+	private var _wall:FlxSprite;
+	
+	private var _darkness:FlxSprite;
+	private var _darkness2:FlxSprite;
 	
 	override public function create():Void
 	{
@@ -27,10 +31,26 @@ class PlayState extends FlxState
 		_player = new Player(100, 100);
 		add(_player);
 		
+		
+		_darkness = new FlxSprite(0, 0);
+		_darkness.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		_darkness.blend = BlendMode.MULTIPLY;
+		add(_darkness);
+		
+		_darkness2 = new FlxSprite();
+		_darkness2 = _darkness.clone();
+		
+		
 		_flashLight = new Flashlight(_player.x, _player.y);
 		//_flashLight.blend = BlendMode.MULTIPLY;
 		add(_flashLight);
 		
+		
+		
+		_wall = new FlxSprite(100, 100);
+		_wall.makeGraphic(100, 100);
+		_wall.health = 1;
+		add(_wall);
 		
 		
 		FlxG.camera.zoom = 2;
@@ -52,11 +72,21 @@ class PlayState extends FlxState
 		
 		_flashLight.x += xDir* 35;
 		_flashLight.y += yDir * 35;
-		
+		_flashLight.updateHitbox();
+		_darkness.stamp(_darkness2, 0, 0);
+		_darkness.stamp(_flashLight, Std.int(_player.x), Std.int(_player.y));
 		if (FlxG.mouse.justPressed)
 		{
 			_flashLight.visible = !_flashLight.visible;
+			Pew.shoot(_player.x, _player.y, FlxG.mouse.x, FlxG.mouse.y, [_wall]).health -= 0.1;
 		}
 		
+		if (FlxG.mouse.pressed)
+		{
+			FlxG.watch.addQuick("RayCast", Pew.shoot(_player.x, _player.y, FlxG.mouse.x, FlxG.mouse.y, [_wall]));
+			
+			
+		}
+		_wall.alpha = _wall.health;
 	}
 }
