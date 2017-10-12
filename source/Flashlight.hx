@@ -21,7 +21,9 @@ class Flashlight extends FlxSprite
 	{
 		super();
 		
-		makeGraphic(40, 35);
+		makeGraphic(200, 100);
+		origin.x = 16;
+		origin.y = 16;
 		blend = BlendMode.SCREEN;
 		
 	}

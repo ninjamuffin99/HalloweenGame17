@@ -63,8 +63,8 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		
 		_flashLight.angle = _player.angle - 90;
-		_flashLight.setPosition(_player.x - (_flashLight.width - _player.width) / 2, (_player.y + (_player.height - _flashLight.height) / 2));
-		
+		//_flashLight.setPosition(_player.x - (_flashLight.width - _player.width) / 2, (_player.y + (_player.height - _flashLight.height) / 2));
+		_flashLight.setPosition(_player.x, _player.y);
 		var rads = _flashLight.angle * Math.PI / 180;
 		
 		var xDir = Math.cos(rads);
@@ -72,9 +72,11 @@ class PlayState extends FlxState
 		
 		_flashLight.x += xDir* 35;
 		_flashLight.y += yDir * 35;
-		_flashLight.updateHitbox();
+		
 		_darkness.stamp(_darkness2, 0, 0);
 		_darkness.stamp(_flashLight, Std.int(_player.x), Std.int(_player.y));
+		//_flashLight.updateHitbox();
+		
 		if (FlxG.mouse.justPressed)
 		{
 			_flashLight.visible = !_flashLight.visible;
