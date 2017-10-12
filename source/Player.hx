@@ -14,16 +14,17 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 class Player extends FlxSprite 
 {
 	private var speed:Float = 100;
+	private var interacting:Bool = false;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
 		super(X, Y);
 		
-		makeGraphic(10, 16);
+		loadGraphic(AssetPaths.WizardPlaceholder__png, false, 32, 32);
+		
 		centerOrigin();
 		
-		drag.x = drag.y = 1000;
-		
+		drag.x = drag.y = 700;
 	}
 	
 	override public function update(elapsed:Float):Void 
@@ -42,7 +43,7 @@ class Player extends FlxSprite
 		
 		var degs = rads * 180 / Math.PI;
 		FlxG.watch.addQuick("Degs/Angle", degs);
-		angle = degs;
+		angle = degs + 90;
 	}
 	
 	private function controls():Void
@@ -105,6 +106,139 @@ class Player extends FlxSprite
 			}
 			
 		}
+	}
+	
+	public function interact(object:FlxSprite, _objAnimOnly:Bool,  _animationON:String = "", _animationOFF:String = "", sound:String = null, collision:Bool = false, objectOffset:Float = 0, Callback:Bool = false, CallbackFunc:Void->Void = null, callbackOnly:Bool = false):Void
+	{
+		var _btnInteract:Bool = false;
+		_btnInteract = FlxG.keys.anyJustPressed([SPACE, W, E, I, O, UP]);
+		
+		var _btnUninteract:Bool = false;
+		_btnUninteract = FlxG.keys.anyPressed([LEFT, A, J, RIGHT, D, L]);
+		
+		if (collision)
+		{
+			object.immovable = true;
+			
+			
+			if (FlxG.collide(this, object) && _btnInteract)
+			{
+				object.animation.play(_animationON);
+				FlxG.sound.play(sound);
+					
+				if (Callback)
+				{
+					FlxG.log.add("Interaction Callback");
+					CallbackFunc();
+				}
+			}
+		}
+		else
+		{
+			if (FlxG.overlap(this, object))
+			{
+				
+				if (_btnInteract && !interacting)
+				{
+					
+					object.animation.play(_animationON);
+					FlxG.sound.play(sound);
+					
+					if (Callback)
+					{
+						FlxG.log.add("Interaction Callback");
+						CallbackFunc();
+					}
+					
+					//change this so it calls a special function or something like sitdown if needed
+					if (!_objAnimOnly)
+					{
+						visible = false;
+						interacting = true;
+					}
+					//FlxG.sound.playMusic("assets/music/track1.mp3");
+				}
+				
+				if (_btnUninteract && interacting)
+				{
+					object.animation.play(_animationOFF);
+					interacting = false;
+					visible = true;
+				}
+				
+				if (interacting && !_objAnimOnly)
+				{
+					this.x = object.x + objectOffset;
+				}
+			}
+		}
+		
+		
+	}
+	
+	public function interactOneTime(object:FlxSprite, _objAnimOnly:Bool,  _animationON:String = "", _animationOFF:String = "", sound:String = null, collision:Bool = false, objectOffset:Float = 0, Callback:Bool = false, CallbackFunc:Void->Void = null, callbackOnly:Bool = false):Void
+	{
+		
+		
+		var _btnInteract:Bool = false;
+		_btnInteract = FlxG.keys.anyJustPressed([SPACE, E, O]);
+		
+		/*
+		var _btnUninteract:Bool = false;
+		_btnUninteract = FlxG.keys.anyPressed([LEFT, A, J, RIGHT, D, L]);
+		*/
+		if (collision)
+		{
+			object.immovable = true;
+			
+			
+			if (FlxG.collide(this, object) && _btnInteract)
+			{
+				object.animation.play(_animationON);
+				FlxG.sound.play(sound);
+					
+				if (Callback)
+				{
+					FlxG.log.add("Interaction Callback");
+					CallbackFunc();
+				}
+			}
+		}
+		else
+		{
+			if (FlxG.overlap(this, object))
+			{
+				
+				if (_btnInteract && !interacting)
+				{
+					
+					object.animation.play(_animationON);
+					FlxG.sound.play(sound);
+					
+					if (Callback)
+					{
+						FlxG.log.add("Interaction Callback");
+						CallbackFunc();
+					}
+					
+					//FlxG.sound.playMusic("assets/music/track1.mp3");
+				}
+				/*
+				if (_btnUninteract && interacting)
+				{
+					object.animation.play(_animationOFF);
+					interacting = false;
+					visible = true;
+				}
+				*/
+				if (interacting && !_objAnimOnly)
+				{
+					this.x = object.x + objectOffset;
+				}
+			}
+		}
+		
+		
 	}
 	
 }

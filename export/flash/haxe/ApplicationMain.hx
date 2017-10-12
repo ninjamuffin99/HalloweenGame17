@@ -34,8 +34,16 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.TEXT);
 		
 		
+		urls.push ("assets/images/bg.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
 		urls.push ("assets/images/images-go-here.txt");
 		types.push (lime.Assets.AssetType.TEXT);
+		
+		
+		urls.push ("assets/images/WizardPlaceholder.png");
+		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
 		urls.push ("assets/music/music-goes-here.txt");
@@ -131,7 +139,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "9",
+			build: "75",
 			company: "ninjaMuffin",
 			file: "HalloweenGame17",
 			fps: 60,
