@@ -1,10 +1,15 @@
 package;
 
+import assets.manager.FileLoader;
+import assets.manager.misc.FileInfo;
+import assets.manager.misc.LoaderStatus;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.editors.ogmo.FlxOgmoLoader;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
@@ -13,6 +18,10 @@ import openfl.display.BlendMode;
 class PlayState extends FlxState
 {
 	private var _player:Player;
+	
+	private var _map:FlxOgmoLoader;
+	private var _mWalls:FlxTilemap;
+	
 	private var bg:FlxSprite;
 	
 	private var _flashLight:Flashlight;
@@ -23,7 +32,6 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
-		
 		bg = new FlxSprite();
 		bg.loadGraphic(AssetPaths.bg__png, false, 689, 483);
 		add(bg);
@@ -58,6 +66,7 @@ class PlayState extends FlxState
 		super.create();
 	}
 
+	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
